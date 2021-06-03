@@ -110,10 +110,17 @@ Date:   Wed Jun 2 10:55:43 2021 -0700
     Initial commit
 ```
 
+## Fetch Merge / Pulling
+
 Now let's suppose that our coworkers have been busy pushing features while we've 
 been working on our branch. We can get pull their changes:
 ```sh
+# you need a clean working dir, so if you have uncommited code, stash them
+git stash
+# rebase merge the remote changes
 git pull --rebase origin main
+# re-apply your prior uncommited changes
+git stash pop # can also use `git stash apply`
 ```
 
 This will pull all of main's commits to our branch and THEN apply our changes on
@@ -137,7 +144,10 @@ pristine head:
 git rebase --abort
 ```
 
-## Fixing Mistakes Part 1: Before Push
+## Fixing Mistakes Part 1: Local Commits
+
+This section deals with fixing commits that have not been pushed. In a later section
+we'll discuss how to fix remote commits.
 
 Let's suppose I rebase and I messed something up. You can fix that too!
 
@@ -159,13 +169,6 @@ You can go back in time like nothing happened:
 ```sh
 # NOTE! This will destroy any local uncommitted changes!
 git reset --hard 82c1c0f
-```
-
-Alternatively, you can stash your changes first:
-```sh
-git stash
-git reset --hard 82c1c0f
-git stash pop
 ```
 
 The `git reflog` results of doing this:
@@ -218,7 +221,7 @@ The goal of feature branch squashing is to communicate well:
  1. Assign yourself as the assignee.
  1. Request review from others, and consider sending them a courtesy Slack message.
 
- ## Fixing Mistakes Part 2: After Push
+ ## Fixing Mistakes Part 2: Remote Commits
 
 Suppose we made a mistake that we've already pushed to our feature branch. OH NOES!
 
@@ -235,7 +238,7 @@ changes, you can use the unsafe `--force` option instead.
 
 If you need to fix something on main, open a branch and use `git revert COMMIT_ID` 
 to commit an inverse change. Then make your change, get a review, and
-squash merge.
+squash merge (this is discussed in the next section).
 
  ## Merging Pull Requests
 You should never merge a pull request that hasn't had a review. At least one other
