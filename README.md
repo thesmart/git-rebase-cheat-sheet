@@ -143,6 +143,15 @@ You can go back in time like nothing happened:
 # NOTE! This will destroy any local uncommitted changes!
 git reset --hard 82c1c0f
 ```
+
+Alternatively, you can stash your changes first:
+```sh
+git stash
+git reset --hard 82c1c0f
+git stash pop
+```
+
+The `git reflog` results of doing this:
 ```
 82c1c0f (HEAD -> smart/my-feature) HEAD@{0}: reset: moving to 82c1c0f
 a426582 HEAD@{1}: rebase -i (finish): returning to refs/heads/smart/my-feature
@@ -218,6 +227,8 @@ by using interactive pull, allowing you to fix merge conflicts one commit at a t
 git stash
 # start the interactive pull
 git pull --rebase=interactive origin main
+# un-stash your local changes
+git stash pop
 ```
 
  ## Merging Pull Requests
