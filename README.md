@@ -17,7 +17,7 @@ development and better communication about how and why code changes
 over time.
 
 Benefits:
- - greatly simplifies merging
+ - greatly simplifies branch merging
  - greatly simplifies locating regressions via `git blame`
  - can see one major change per line via `git log`
  - can use the pull request ID to see the complete information
@@ -117,8 +117,25 @@ git pull --rebase origin main
 ```
 
 This will pull all of main's commits to our branch and THEN apply our changes on
-top. This will totally avoid any merge conflicts as long as you are pulling from
-main, provided that everyone is squash merging their PRs.
+top. **Squashed commits make it easier to resolve merge conflicts** because you know 
+that each pulled commit represents a cohensive, accepted body of working code.
+
+Occasionally, it may be easier to fix merge conflicts by using **interactive rebase pull**, 
+allowing you to fix merge conflicts one commit at a time:
+```sh
+git pull --rebase=interactive origin main
+```
+
+If there is a conflict, resolve it and then resume the rebase process:
+```
+git rebase --continue
+```
+
+If you want to start over, you can abort the rebase and return to a 
+pristine head:
+```
+git rebase --abort
+```
 
 ## Fixing Mistakes Part 1: Before Push
 
@@ -219,17 +236,6 @@ changes, you can use the unsafe `--force` option instead.
 If you need to fix something on main, open a branch and use `git revert COMMIT_ID` 
 to commit an inverse change. Then make your change, get a review, and
 squash merge.
-
-Occasionally, a pull from main may create merge conflicts. It may be easier to fix these 
-by using interactive pull, allowing you to fix merge conflicts one commit at a time:
-```sh
-# stash your local changes
-git stash
-# start the interactive pull
-git pull --rebase=interactive origin main
-# un-stash your local changes
-git stash pop
-```
 
  ## Merging Pull Requests
 You should never merge a pull request that hasn't had a review. At least one other
