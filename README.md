@@ -1,6 +1,30 @@
 # Git Rebase Tutorial
 This is a cheat sheet for learning how to manage branch development using rebase.
 
+## Why do we care about this?
+Developing software concurrently means that increasing development 
+velocity also increases the overhead of managing feature integration
+in `main`. Most commits are "junk" -- small fixes for typos or other
+minutiae that saturates the `main` branch log w/ noise. There are also
+increasing compliance requirements that make tracking product changes
+even more critical than ever. 
+
+This document is a guide for managing large repos at scale by keeping 
+features separate from `main` until they reach a subjective level of 
+acceptance. This guide helps keep Git commit logs simple and clean,
+while eliminating most merge conflicts. This leads to more effecient
+development and better communication about how and why code changes 
+over time.
+
+Benefits:
+ - greatly simplifies merging
+ - greatly simplifies locating regressions via `git blame`
+ - can see one major change per line via `git log`
+ - can use the pull request ID to see the complete information
+ - one tool provides all related spec, bug, wireframe etc.
+
+## Revising History
+
 Start by creating a feature branch from main:
 ```sh
 git checkout -b smart/my-feature
